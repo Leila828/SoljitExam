@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="dashboard.css">
+</head>
+<body>
+
+
+<div id="dashboard">
+    <div id="applications-container"></div>
+</div>
+
+<div id="application-template">
+    <div class="application">
+        <div class="application-name">
+            <label>Name:</label>
+            <span id="name"></span>
+        </div>
+        <div class="application-year">
+            <label>Year:</label>
+            <span id="year"></span>
+        </div>
+        <div class="application-year-of-experience">
+            <label>Year of Experience:</label>
+            <span id="year-of-experience"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const dashboard = document.getElementById("dashboard");
+    const applicationTemplate = document.getElementById("application-template");
+
+    function displayApplications(applications) {
+        // Create an object to store the filtered applications by type
+        const applicationsByType = {};
+
+        // Loop through the applications and add them to the corresponding type
+        applications.forEach(application => {
+            if (!applicationsByType[application.Type__c]) {
+                applicationsByType[application.Type__c] = [];
+            }
+            applicationsByType[application.Type__c].push(application);
+        });
+
+        // Loop through the filtered applications and create a container for each type
+        for (const type in applicationsByType) {
+            const typeContainer = document.createElement("div");
+            typeContainer.classList.add("type-container");
+            typeContainer.innerHTML = `<h2>${type}</h2>`;
+            applicationsByType[type].forEach(application => {
+                const newApplication = applicationTemplate.content.cloneNode(true);
+                newApplication.querySelector("#name").innerHTML = application.Name__c;
+                newApplication.querySelector("#year").innerHTML = application.Year__c;
+                newApplication.querySelector("#year-of-experience").innerHTML = application.Year_Of_Experience__c;
+                typeContainer.appendChild(newApplication);
+            });
+            dashboard.appendChild(typeContainer);
+        }
+    }
+    fetch("https://soljit.salesforce.com/services/data/v55.0/query?q=SELECT+Name__c,Year__c,Year_Of_Experience__c+FROM+Application__c")
+        .then(response => response.json())
+        .then(data => displayApplications(data.records))
+        .catch(error => console.error(error));
+</script>
+</body>
+</html>

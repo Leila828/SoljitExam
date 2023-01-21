@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="interface.css">
+
+        <script>
+        const applicationsContainer = document.getElementById("applications-container");
+        const applicationTemplate = document.getElementsByClassName("application");
+
+        function displayApplications(applications) {
+            applications.forEach(application => {
+                const newApplication = applicationTemplate.content.cloneNode(true);
+                newApplication.querySelector("#name").innerHTML = application.Name__c;
+                newApplication.querySelector("#year").innerHTML = application.Year__c;
+                newApplication.querySelector("#year-of-experience").innerHTML = application.Year_Of_Experience__c;
+                applicationsContainer.appendChild(newApplication);
+            });
+        }
+
+        fetch("https://soljit.salesforce.com/services/data/v55.0/query?q=SELECT+Name__c,Year__c,Year_Of_Experience__c+FROM+Application__c")
+            .then(response => response.json())
+            .then(data => displayApplications(data.records))
+            .catch(error => console.error(error));
+
+
+    </script>
+</head>
+<body>
+<div id="applications-container"></div>
+
+<div class="application">
+    <div class="application-name">
+        <label>Name:</label>
+        <span id="name"></span>
+    </div>
+    <div class="application-year">
+        <label>Year:</label>
+        <span id="year"></span>
+    </div>
+    <div class="application-year-of-experience">
+        <label>Year of Experience:</label>
+        <span id="year-of-experience"></span>
+    </div>
+</div>
+
+</body>
+</html>

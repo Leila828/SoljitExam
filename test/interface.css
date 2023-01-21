@@ -1,0 +1,30 @@
+.application {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
+
+.application label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.application span {
+    font-size: 16px;
+}
+
+.application-name {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.application-year, .application-year-of-experience {
+    width: 50%;
+    margin-bottom: 10px;
+}
+
